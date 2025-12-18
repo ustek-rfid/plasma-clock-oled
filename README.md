@@ -2,7 +2,7 @@
 
 A minimal digital clock widget for KDE Plasma on Wayland that repositions randomly to prevent OLED burn-in.
 
-![Plasma Clock OLED](resources/plasma-clock-oled.svg)
+![Plasma Clock OLED](resources/oled-clock-widget.svg)
 
 ## Features
 
@@ -29,7 +29,7 @@ Build and install the package:
 ```bash
 cmake -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build --target package_arch
-sudo pacman -U build/plasma-clock-oled-1.0-1-x86_64.pkg.tar.zst
+sudo pacman -U build/plasma-clock-oled-1.1-1-x86_64.pkg.tar.zst
 ```
 
 ### From Source
