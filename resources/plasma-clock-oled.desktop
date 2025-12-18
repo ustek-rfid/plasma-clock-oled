@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Plasma Clock OLED
+GenericName=Clock Widget
+Comment=A moving clock widget to prevent OLED burn-in
+Exec=plasma-clock-oled
+Icon=plasma-clock-oled
+Categories=Utility;
+Keywords=clock;time;oled;burn-in;plasma;
+X-KDE-autostart-after=panel

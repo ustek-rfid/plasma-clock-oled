@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>plasma-clock-oled.svg</file>
+    </qresource>
+</RCC>
