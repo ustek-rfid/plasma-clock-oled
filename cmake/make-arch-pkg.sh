@@ -23,10 +23,9 @@ mkdir -p "${STAGE_DIR}"
 # Install to staging directory
 cmake --install "${BUILD_DIR}" --prefix "${STAGE_DIR}/usr"
 
-# Move etc from usr/etc to /etc
-if [ -d "${STAGE_DIR}/usr/etc" ]; then
-    mv "${STAGE_DIR}/usr/etc" "${STAGE_DIR}/etc"
-fi
+# Install autostart to /etc/xdg/autostart
+mkdir -p "${STAGE_DIR}/etc/xdg/autostart"
+cp "${STAGE_DIR}/usr/share/applications/plasma-clock-oled.desktop" "${STAGE_DIR}/etc/xdg/autostart/"
 
 # Calculate installed size (in bytes)
 PKG_SIZE=$(du -sb "${STAGE_DIR}" | cut -f1)
@@ -52,12 +51,27 @@ depend = qt6-svg
 depend = layer-shell-qt
 EOF
 
+# Create install script for cache updates
+cat > "${STAGE_DIR}/.INSTALL" << 'EOF'
+post_install() {
+    xdg-icon-resource forceupdate --theme hicolor 2>/dev/null || true
+    update-desktop-database -q /usr/share/applications 2>/dev/null || true
+}
+
+post_upgrade() {
+    post_install
+}
+
+post_remove() {
+    post_install
+}
+EOF
+
 # Generate .MTREE
 cd "${STAGE_DIR}"
 
 # List all files/directories to include
-CONTENTS=""
-[ -f .PKGINFO ] && CONTENTS=".PKGINFO"
+CONTENTS=".PKGINFO .INSTALL"
 [ -d usr ] && CONTENTS="${CONTENTS} usr"
 [ -d etc ] && CONTENTS="${CONTENTS} etc"
 
@@ -67,6 +81,6 @@ LANG=C bsdtar -czf .MTREE --format=mtree \
     ${CONTENTS}
 
 # Create the package
-LANG=C bsdtar -cf - .MTREE .PKGINFO ${CONTENTS} | zstd -c -T0 -19 > "${BUILD_DIR}/${PKG_FILENAME}"
+LANG=C bsdtar -cf - .MTREE ${CONTENTS} | zstd -c -T0 -19 > "${BUILD_DIR}/${PKG_FILENAME}"
 
 echo "Created: ${BUILD_DIR}/${PKG_FILENAME}"

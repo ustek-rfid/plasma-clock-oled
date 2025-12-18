@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(plasma-clock-oled VERSION 1.0 LANGUAGES CXX)
+project(plasma-clock-oled VERSION 1.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -24,8 +24,8 @@ target_link_libraries(plasma-clock-oled PRIVATE
 
 install(TARGETS plasma-clock-oled DESTINATION bin)
 install(FILES resources/plasma-clock-oled.desktop DESTINATION share/applications)
-install(FILES resources/plasma-clock-oled.desktop DESTINATION etc/xdg/autostart)
 install(FILES resources/plasma-clock-oled.svg DESTINATION share/icons/hicolor/scalable/apps)
+install(FILES resources/oled-clock-widget.svg DESTINATION share/icons/hicolor/scalable/apps)
 
 # Package metadata
 set(PKG_DESCRIPTION_SUMMARY "A moving clock widget to prevent OLED burn-in")
