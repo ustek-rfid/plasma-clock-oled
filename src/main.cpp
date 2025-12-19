@@ -3,7 +3,27 @@
 #include <QLockFile>
 #include <QStandardPaths>
 #include <QDir>
+#include <QPointer>
+#include <QDebug>
 #include "ClockWidget.h"
+
+static QPointer<ClockWidget> g_clock;
+
+static void createClock()
+{
+    qDebug() << "Creating new ClockWidget";
+    g_clock = new ClockWidget();
+    QObject::connect(g_clock, &ClockWidget::recreationRequested, []() {
+        qDebug() << "Recreation requested, scheduling...";
+        // Delete old and create new on next event loop iteration
+        if (g_clock) {
+            g_clock->deleteLater();
+        }
+        QMetaObject::invokeMethod(qApp, []() {
+            createClock();
+        }, Qt::QueuedConnection);
+    });
+}
 
 int main(int argc, char *argv[])
 {
@@ -25,7 +45,7 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    ClockWidget clock;
+    createClock();
 
     return app.exec();
 }

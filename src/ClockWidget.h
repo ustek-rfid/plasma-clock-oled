@@ -19,6 +19,9 @@ public:
     explicit ClockWidget(QWidget *parent = nullptr);
     ~ClockWidget() override = default;
 
+signals:
+    void recreationRequested();
+
 protected:
     void contextMenuEvent(QContextMenuEvent* event) override;
 
@@ -27,6 +30,7 @@ private slots:
     void repositionClock();
     void onConfigFileChanged(const QString& path);
     void toggleTrayIcon();
+    void onScreenAdded(QScreen* screen);
 
 private:
     void setupWindow();

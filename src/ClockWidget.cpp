@@ -51,6 +51,10 @@ ClockWidget::ClockWidget(QWidget *parent)
     setupTimers();
     setupConfigWatcher();
     setupTrayIcon();
+
+    // Watch for screen changes (handles lock/unlock where outputs are removed/added)
+    connect(qApp, &QGuiApplication::screenAdded,
+            this, &ClockWidget::onScreenAdded);
 }
 
 void ClockWidget::configureLayerShell()
@@ -582,4 +586,22 @@ void ClockWidget::saveSettings()
 {
     m_settings.setValue("showTrayIcon", m_showTrayIcon);
     m_settings.sync();
+}
+
+void ClockWidget::onScreenAdded(QScreen* screen)
+{
+    // Ignore placeholder screens (empty name means no real output)
+    if (screen->name().isEmpty()) {
+        qDebug() << "Ignoring placeholder screen";
+        return;
+    }
+
+    qDebug() << "Real screen added:" << screen->name();
+
+    // Request widget recreation to get a fresh layer shell surface
+    // The old widget can't be converted back to layer shell after screen changes
+    QTimer::singleShot(200, this, [this]() {
+        qDebug() << "Requesting widget recreation";
+        emit recreationRequested();
+    });
 }

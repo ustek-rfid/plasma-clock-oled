@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.16)
-project(plasma-clock-oled VERSION 1.1 LANGUAGES CXX)
+project(plasma-clock-oled VERSION 1.2 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Widgets WaylandClient Svg)
+find_package(Qt6 REQUIRED COMPONENTS Widgets WaylandClient Svg DBus)
 find_package(LayerShellQt REQUIRED)
 
 add_executable(plasma-clock-oled
