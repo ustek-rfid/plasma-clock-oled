@@ -11,6 +11,7 @@ A minimal digital clock widget for KDE Plasma on Wayland that repositions random
 - **Panel Aware** - Automatically adapts to panel size, position, and orientation (top, bottom, left, right)
 - **Live Updates** - Detects panel configuration changes in real-time
 - **Minimal UI** - Transparent background, stays below all windows
+- **Peek Aware** - Stays visible during "Peek at Desktop" (Meta+D), like the Plasma panels
 - **System Tray** - Optional tray icon with theme-adaptive colors
 - **Lightweight** - Native Qt6/C++ application using Wayland layer-shell
 
@@ -29,7 +30,7 @@ Build and install the package:
 ```bash
 cmake -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build --target package_arch
-sudo pacman -U build/plasma-clock-oled-1.1-1-x86_64.pkg.tar.zst
+sudo pacman -U build/plasma-clock-oled-1.3-1-x86_64.pkg.tar.zst
 ```
 
 ### From Source

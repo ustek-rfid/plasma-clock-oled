@@ -64,6 +64,12 @@ void ClockWidget::configureLayerShell()
 
     if (auto* layerWindow = LayerShellQt::Window::get(windowHandle())) {
         layerWindow->setLayer(LayerShellQt::Window::LayerBottom);
+        // "dock" scope: KWin maps the layer-shell scope to the window type,
+        // and "Peek at Desktop" (Meta+D) hides every window that is not a
+        // dock/desktop surface. Like the Plasma panels, a dock-typed surface
+        // stays visible during peek. Stacking is unaffected: KWin stacks
+        // layer-shell surfaces by their wlr layer, not their window type.
+        layerWindow->setScope(QStringLiteral("dock"));
         layerWindow->setExclusiveZone(0);
         layerWindow->setKeyboardInteractivity(LayerShellQt::Window::KeyboardInteractivityNone);
 
